@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Container, Typography } from "@mui/material";
+import React, { useEffect } from "react";
 
 function App() {
+  const handleKeypress = (e: KeyboardEvent) => {
+    const re = /^[A-Za-z]$/;
+    if (re.test(e.key)) {
+      console.log(`Handle ${e.key.toLowerCase()}`);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeypress);
+    return () => {
+      document.removeEventListener("keydown", handleKeypress);
+    };
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxWidth='lg' style={{ padding: "25px 35px" }}>
+      <Typography variant='h2'>Wordle but the way I like it</Typography>
+    </Container>
   );
 }
 
