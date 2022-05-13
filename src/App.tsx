@@ -1,14 +1,14 @@
 import { Container, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 
-function App() {
-  const handleKeypress = (e: KeyboardEvent) => {
-    const re = /^[A-Za-z]$/;
-    if (re.test(e.key)) {
-      console.log(`Handle ${e.key.toLowerCase()}`);
-    }
-  };
+const handleKeypress = (e: KeyboardEvent) => {
+  const re = /^[A-Za-z]$/;
+  if (re.test(e.key)) {
+    console.log(`Handle ${e.key.toLowerCase()}`);
+  }
+};
 
+function App() {
   useEffect(() => {
     document.addEventListener("keydown", handleKeypress);
     return () => {
