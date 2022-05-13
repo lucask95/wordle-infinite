@@ -31,4 +31,5 @@ if __name__ == "__main__":
   name_list = lines_to_list('../data/nameslist.txt')
   words_with_freq = [word_to_entry(word) for word in word_list]
   words_with_freq = list(filter(lambda entry: entry['frequency'] >= FREQUENCY_THRESHOLD, words_with_freq))
+  words_with_freq.sort(key=lambda entry: entry['frequency'])
   write_wordsandfreq_to_json('../data/words_with_frequencies.json', words_with_freq)
