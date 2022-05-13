@@ -33,7 +33,7 @@ function App() {
         }
       }
     },
-    [currentEntry, setCurrentEntry]
+    [currentEntry, setCurrentEntry, checkWord]
   );
 
   useEffect(() => {
