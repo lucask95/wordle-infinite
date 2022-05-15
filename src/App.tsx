@@ -5,6 +5,19 @@ import { getRandomWord, isValidGuess } from "./util/utils";
 
 const alphabetRegex = /^[A-Za-z]$/;
 
+const styles = {
+  root: {
+    backgroundColor: "whitesmoke",
+    width: "100vw",
+    height: "100vh",
+    textAlign: "center" as const,
+  },
+  innerContainer: { padding: "25px 35px" },
+  guessContainer: {
+    margin: "30px 0",
+  },
+};
+
 function App() {
   const [currentEntry, setCurrentEntry] = useState<string>("");
   const [pastGuesses, setPastGuesses] = useState<Array<string>>([]);
@@ -47,25 +60,27 @@ function App() {
   }, [handleKeypress]);
 
   return (
-    <div
-      style={{ backgroundColor: "whitesmoke", width: "100vw", height: "100vh" }}
-    >
-      <Container maxWidth='lg' style={{ padding: "25px 35px" }}>
+    <div style={styles.root}>
+      <Container maxWidth='lg' style={styles.innerContainer}>
         <Typography variant='h2'>Wordle but the way I like it</Typography>
-        <Typography variant='h3'>mystery word is {mysteryWord}</Typography>
-        {pastGuesses &&
-          pastGuesses.map((guess) => (
-            <GuessDisplay
-              guess={guess}
-              mysteryWord={mysteryWord}
-              guessFinalized={true}
-            />
-          ))}
-        <GuessDisplay
-          guess={currentEntry}
-          mysteryWord={mysteryWord}
-          guessFinalized={false}
-        />
+        <Typography variant='h3'>
+          mystery word is {mysteryWord.toUpperCase()}
+        </Typography>
+        <div style={styles.guessContainer}>
+          {pastGuesses &&
+            pastGuesses.map((guess) => (
+              <GuessDisplay
+                guess={guess}
+                mysteryWord={mysteryWord}
+                guessFinalized={true}
+              />
+            ))}
+          <GuessDisplay
+            guess={currentEntry}
+            mysteryWord={mysteryWord}
+            guessFinalized={false}
+          />
+        </div>
       </Container>
     </div>
   );
