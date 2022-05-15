@@ -73,7 +73,7 @@ const GuessDisplay = ({ guess, mysteryWord, guessFinalized }: Props) => {
     <div>
       {guess
         .toUpperCase()
-        .padEnd(5)
+        .padEnd(5, "_")
         .split("")
         .map((char, i) => (
           <div

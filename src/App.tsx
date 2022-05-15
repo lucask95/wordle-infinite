@@ -21,16 +21,20 @@ const styles = {
 function App() {
   const [currentEntry, setCurrentEntry] = useState<string>("");
   const [pastGuesses, setPastGuesses] = useState<Array<string>>([]);
-  const [mysteryWord] = useState<string>(getRandomWord());
+  const [mysteryWord, setMysteryWord] = useState<string>(getRandomWord());
+  const [betweenWords, setBetweenWords] = useState<boolean>(false);
 
   const checkWord = useCallback(
     (guess: string) => {
       if (guess.length === 5 && isValidGuess(guess)) {
         setPastGuesses((current) => [...current, guess]);
         setCurrentEntry("");
+        if (guess === mysteryWord) {
+          setBetweenWords(true);
+        }
       }
     },
-    [setCurrentEntry, setPastGuesses]
+    [setCurrentEntry, setPastGuesses, setBetweenWords, mysteryWord]
   );
 
   const handleKeypress = useCallback(
@@ -40,7 +44,11 @@ function App() {
           setCurrentEntry((val) => val.slice(0, -1));
         }
       } else if (e.key === "Enter" || e.key === "Return") {
-        if (currentEntry.length === 5) {
+        if (betweenWords) {
+          setMysteryWord(getRandomWord());
+          setBetweenWords(false);
+          setPastGuesses([]);
+        } else if (currentEntry.length === 5) {
           checkWord(currentEntry);
         }
       } else if (alphabetRegex.test(e.key)) {
@@ -75,11 +83,13 @@ function App() {
                 guessFinalized={true}
               />
             ))}
-          <GuessDisplay
-            guess={currentEntry}
-            mysteryWord={mysteryWord}
-            guessFinalized={false}
-          />
+          {!betweenWords && (
+            <GuessDisplay
+              guess={currentEntry}
+              mysteryWord={mysteryWord}
+              guessFinalized={false}
+            />
+          )}
         </div>
       </Container>
     </div>
