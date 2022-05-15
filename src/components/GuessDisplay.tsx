@@ -15,9 +15,15 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     color: "white",
-    backgroundColor: "darkgray",
+    backgroundColor: "#3a3a3c",
     margin: "25px 5px",
     borderRadius: 3,
+  },
+  letterInWord: {
+    backgroundColor: "#b59f3b",
+  },
+  correctSpace: {
+    backgroundColor: "#538d4e",
   },
 };
 
@@ -35,6 +41,14 @@ const convertToMap = (word: string): Record<string, number> => {
   return dict;
 };
 
+const getStyles = (
+  guessSoFar: string,
+  mysteryWord: string,
+  mysteryWordMap: Record<string, number>
+) => {
+  return { ...styles.box, ...styles.correctSpace };
+};
+
 const GuessDisplay = ({ guess, mysteryWord, guessFinalized }: Props) => {
   const mysteryWordMap = useMemo(
     () => convertToMap(mysteryWord),
@@ -47,8 +61,14 @@ const GuessDisplay = ({ guess, mysteryWord, guessFinalized }: Props) => {
         .toUpperCase()
         .padEnd(5)
         .split("")
-        .map((char) => (
-          <div style={styles.box}>
+        .map((char, i) => (
+          <div
+            style={
+              guessFinalized
+                ? getStyles(guess.slice(0, i + 1), mysteryWord, mysteryWordMap)
+                : styles.box
+            }
+          >
             <Typography variant='h5'>{char}</Typography>
           </div>
         ))}

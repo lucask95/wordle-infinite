@@ -1,7 +1,7 @@
 import { Container, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import GuessDisplay from "./components/GuessDisplay";
-import { getRandomWord } from "./util/utils";
+import { getRandomWord, isValidGuess } from "./util/utils";
 
 const alphabetRegex = /^[A-Za-z]$/;
 
@@ -12,10 +12,12 @@ function App() {
 
   const checkWord = useCallback(
     (guess: string) => {
-      console.log(guess, mysteryWord);
-      setPastGuesses((current) => [...current, guess]);
+      if (guess.length === 5 && isValidGuess(guess)) {
+        setPastGuesses((current) => [...current, guess]);
+        setCurrentEntry("");
+      }
     },
-    [mysteryWord, setPastGuesses]
+    [setCurrentEntry, setPastGuesses]
   );
 
   const handleKeypress = useCallback(
@@ -48,6 +50,14 @@ function App() {
     <Container maxWidth='lg' style={{ padding: "25px 35px" }}>
       <Typography variant='h2'>Wordle but the way I like it</Typography>
       <Typography variant='h3'>mystery word is {mysteryWord}</Typography>
+      {pastGuesses &&
+        pastGuesses.map((guess) => (
+          <GuessDisplay
+            guess={guess}
+            mysteryWord={mysteryWord}
+            guessFinalized={true}
+          />
+        ))}
       <GuessDisplay
         guess={currentEntry}
         mysteryWord={mysteryWord}
