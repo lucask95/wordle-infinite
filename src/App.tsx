@@ -1,5 +1,6 @@
 import { Container, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
+import GuessDisplay from "./components/GuessDisplay";
 import { getRandomWord } from "./util/utils";
 
 const alphabetRegex = /^[A-Za-z]$/;
@@ -46,7 +47,12 @@ function App() {
   return (
     <Container maxWidth='lg' style={{ padding: "25px 35px" }}>
       <Typography variant='h2'>Wordle but the way I like it</Typography>
-      <Typography variant='h3'>{currentEntry}</Typography>
+      <Typography variant='h3'>mystery word is {mysteryWord}</Typography>
+      <GuessDisplay
+        guess={currentEntry}
+        mysteryWord={mysteryWord}
+        guessFinalized={false}
+      />
     </Container>
   );
 }

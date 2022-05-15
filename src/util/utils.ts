@@ -1,4 +1,6 @@
 import words from "../data/wordsWithFrequency";
 
-export const getRandomWord = () =>
-  words[Math.floor(Math.random() * words.length)].word;
+export const getRandomWord = () => {
+  const list = Object.keys(words);
+  return list[Math.floor(Math.random() * list.length)];
+};
