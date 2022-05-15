@@ -16,7 +16,7 @@ const styles = {
     alignItems: "center",
     color: "white",
     backgroundColor: "#3a3a3c",
-    margin: "25px 5px",
+    margin: "5px 5px",
     borderRadius: 3,
   },
   letterInWord: {

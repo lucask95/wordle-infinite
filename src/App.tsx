@@ -47,23 +47,27 @@ function App() {
   }, [handleKeypress]);
 
   return (
-    <Container maxWidth='lg' style={{ padding: "25px 35px" }}>
-      <Typography variant='h2'>Wordle but the way I like it</Typography>
-      <Typography variant='h3'>mystery word is {mysteryWord}</Typography>
-      {pastGuesses &&
-        pastGuesses.map((guess) => (
-          <GuessDisplay
-            guess={guess}
-            mysteryWord={mysteryWord}
-            guessFinalized={true}
-          />
-        ))}
-      <GuessDisplay
-        guess={currentEntry}
-        mysteryWord={mysteryWord}
-        guessFinalized={false}
-      />
-    </Container>
+    <div
+      style={{ backgroundColor: "whitesmoke", width: "100vw", height: "100vh" }}
+    >
+      <Container maxWidth='lg' style={{ padding: "25px 35px" }}>
+        <Typography variant='h2'>Wordle but the way I like it</Typography>
+        <Typography variant='h3'>mystery word is {mysteryWord}</Typography>
+        {pastGuesses &&
+          pastGuesses.map((guess) => (
+            <GuessDisplay
+              guess={guess}
+              mysteryWord={mysteryWord}
+              guessFinalized={true}
+            />
+          ))}
+        <GuessDisplay
+          guess={currentEntry}
+          mysteryWord={mysteryWord}
+          guessFinalized={false}
+        />
+      </Container>
+    </div>
   );
 }
 
