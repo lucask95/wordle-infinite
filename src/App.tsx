@@ -8,7 +8,7 @@ const alphabetRegex = /^[A-Za-z]$/;
 function App() {
   const [currentEntry, setCurrentEntry] = useState<string>("");
   const [pastGuesses, setPastGuesses] = useState<Array<string>>([]);
-  const [mysteryWord, setMysteryWord] = useState<string>(getRandomWord());
+  const [mysteryWord] = useState<string>(getRandomWord());
 
   const checkWord = useCallback(
     (guess: string) => {
