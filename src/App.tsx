@@ -1,4 +1,4 @@
-import { Container, Typography } from "@mui/material";
+import { Container, Snackbar, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import GuessDisplay from "./components/GuessDisplay";
 import { getRandomWord, isValidGuess } from "./util/utils";
@@ -23,23 +23,31 @@ function App() {
   const [pastGuesses, setPastGuesses] = useState<Array<string>>([]);
   const [mysteryWord, setMysteryWord] = useState<string>(getRandomWord());
   const [betweenWords, setBetweenWords] = useState<boolean>(false);
+  const [invalidMessageOpen, setInvalidMessageOpen] = useState<boolean>(false);
+  const [isGameEnded, setIsGameEnded] = useState<boolean>(false);
 
   const checkWord = useCallback(
     (guess: string) => {
       if (guess.length === 5 && isValidGuess(guess)) {
-        setPastGuesses((current) => [...current, guess]);
-        setCurrentEntry("");
         if (guess === mysteryWord) {
           setBetweenWords(true);
+        } else if (pastGuesses.length === 5) {
+          setBetweenWords(true);
+          setIsGameEnded(true);
         }
+        setPastGuesses((current) => [...current, guess]);
+        setCurrentEntry("");
+      } else {
+        setInvalidMessageOpen(true);
       }
     },
-    [setCurrentEntry, setPastGuesses, setBetweenWords, mysteryWord]
+    [mysteryWord, pastGuesses]
   );
 
   const handleKeypress = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Backspace") {
+        if (isGameEnded) return;
         if (currentEntry.length > 0) {
           setCurrentEntry((val) => val.slice(0, -1));
         }
@@ -48,16 +56,20 @@ function App() {
           setMysteryWord(getRandomWord());
           setBetweenWords(false);
           setPastGuesses([]);
+          setIsGameEnded(false);
         } else if (currentEntry.length === 5) {
           checkWord(currentEntry);
+        } else {
+          setInvalidMessageOpen(true);
         }
       } else if (alphabetRegex.test(e.key)) {
+        if (isGameEnded) return;
         if (currentEntry.length < 5) {
           setCurrentEntry((val) => val + e.key);
         }
       }
     },
-    [currentEntry, setCurrentEntry, checkWord]
+    [currentEntry, setCurrentEntry, checkWord, betweenWords, isGameEnded]
   );
 
   useEffect(() => {
@@ -72,7 +84,7 @@ function App() {
       <Container maxWidth='lg' style={styles.innerContainer}>
         <Typography variant='h2'>Wordle but the way I like it</Typography>
         <Typography variant='h3'>
-          mystery word is {mysteryWord.toUpperCase()}
+          Mystery word is {mysteryWord.toUpperCase()}
         </Typography>
         <div style={styles.guessContainer}>
           {pastGuesses &&
@@ -83,7 +95,7 @@ function App() {
                 guessFinalized={true}
               />
             ))}
-          {!betweenWords && (
+          {!betweenWords && !isGameEnded && (
             <GuessDisplay
               guess={currentEntry}
               mysteryWord={mysteryWord}
@@ -91,6 +103,14 @@ function App() {
             />
           )}
         </div>
+        <Snackbar
+          open={invalidMessageOpen}
+          autoHideDuration={2500}
+          onClose={() => {
+            setInvalidMessageOpen(false);
+          }}
+          message='Invalid word.'
+        />
       </Container>
     </div>
   );
